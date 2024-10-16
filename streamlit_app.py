@@ -81,7 +81,6 @@ iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJ
 """
 st.markdown(add_bg_from_base64(background_image), unsafe_allow_html=True)
 
-# Custom CSS
 st.markdown("""
 <style>
     .main-header {
@@ -107,16 +106,25 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-bottom: 20px;
+        text-align: center;  /* Center text in all cards */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100px;  /* Set height to make boxes uniform */
     }
     .metric-value {
         font-size: 2.5rem;
         font-weight: bold;
         text-align: center;
+        margin-top: auto;
+        margin-bottom: auto;
     }
     .metric-label {
         font-size: 1.2rem;
         color: #555;
         text-align: center;
+        margin-top: auto;
+        margin-bottom: auto;
     }
     .stButton>button {
         background-color: #1E88E5;
@@ -151,7 +159,7 @@ if calculate_btn:
     bs_model.run()
 
     # Display option prices
-    st.markdown("<h2 class='sub-header'>📈 Option Prices</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='sub-header'>📈 Option Prices</h2>", unsafe_allow_html=True)  
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("<div class='card' style='background-color: rgba(144, 238, 144, 0.6);'>", unsafe_allow_html=True)
@@ -165,7 +173,7 @@ if calculate_btn:
         st.markdown(f"<p class='metric-value'>${bs_model.put_price:.2f}</p>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # Greeks
+
     st.markdown("<h2 class='sub-header'>🔢 Option Greeks</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -180,7 +188,7 @@ if calculate_btn:
         st.markdown(f"<p class='metric-value'>{bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    with col3:
+with col3:
         st.markdown("<div class='card'>", unsafe_allow_html=True)
         st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='metric-value'>{bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
@@ -221,4 +229,4 @@ else:
     st.info("👈 Adjust the parameters in the sidebar and click 'Calculate Option Prices' to see the results!")
 
 st.markdown("---")
-st.markdown("<p style='text-align: center;'>Created by: Your Name | <a href='https://www.linkedin.com/in/your-profile/' target='_blank'>LinkedIn</a></p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Created by: | <a href='https://www.linkedin.com/in/yashprajapati23/' target='_blank'>Yash</a></p>", unsafe_allow_html=True)
