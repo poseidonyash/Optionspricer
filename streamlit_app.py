@@ -4,107 +4,43 @@ import numpy as np
 from scipy.stats import norm
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import base64
 from numpy import exp, sqrt, log
 
-# Black-Scholes Model class (as provided)
+# Black-Scholes Model class (as provided earlier)
 class BlackScholes:
-    def __init__(
-        self,
-        time_to_maturity: float,
-        strike: float,
-        current_price: float,
-        volatility: float,
-        interest_rate: float,
-    ):
-        self.time_to_maturity = time_to_maturity
-        self.strike = strike
-        self.current_price = current_price
-        self.volatility = volatility
-        self.interest_rate = interest_rate
-
-    def run(
-        self,
-    ):
-        time_to_maturity = self.time_to_maturity
-        strike = self.strike
-        current_price = self.current_price
-        volatility = self.volatility
-        interest_rate = self.interest_rate
-
-        d1 = (
-            log(current_price / strike) +
-            (interest_rate + 0.5 * volatility ** 2) * time_to_maturity
-            ) / (
-                volatility * sqrt(time_to_maturity)
-            )
-        d2 = d1 - volatility * sqrt(time_to_maturity)
-
-        call_price = current_price * norm.cdf(d1) - (
-            strike * exp(-(interest_rate * time_to_maturity)) * norm.cdf(d2)
-        )
-        put_price = (
-            strike * exp(-(interest_rate * time_to_maturity)) * norm.cdf(-d2)
-        ) - current_price * norm.cdf(-d1)
-
-        self.call_price = call_price
-        self.put_price = put_price
-
-        # GREEKS
-        # Delta
-        self.call_delta = norm.cdf(d1)
-        self.put_delta = 1 - norm.cdf(d1)
-
-        # Gamma
-        self.call_gamma = norm.pdf(d1) / (
-            strike * volatility * sqrt(time_to_maturity)
-        )
-        self.put_gamma = self.call_gamma
+    # ... (Keep the class implementation as is)
 
 # Page configuration
-st.set_page_config(page_title="Black-Scholes Option Pricing", layout="wide", page_icon="💹")
-
-# Function to create a fancy background
-def add_bg_from_base64(base64_string):
-    return f"""
-    <style>
-    .stApp {{
-        background-image: url("data:image/png;base64,{base64_string}");
-        background-size: cover;
-    }}
-    </style>
-    """
-
-# Fancy background (you can replace this with any base64 encoded image)
-background_image = """
-iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==
-"""
-st.markdown(add_bg_from_base64(background_image), unsafe_allow_html=True)
+st.set_page_config(page_title="Black-Scholes Option Pricing", layout="wide", page_icon="📊")
 
 # Custom CSS
 st.markdown("""
 <style>
+    body {
+        color: white;
+        background-color: #1E1E1E;
+    }
+    .stApp {
+        background-color: #1E1E1E;
+    }
     .main-header {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: bold;
-        color: #1E88E5;
-        text-align: center;
-        padding: 20px;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
+        color: #4CAF50;
+        text-align: left;
+        padding: 20px 0;
         margin-bottom: 30px;
     }
     .sub-header {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: bold;
-        color: #43A047;
+        color: #4CAF50;
         margin-top: 30px;
         margin-bottom: 20px;
     }
     .card {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: #2A2A2A;
         border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-bottom: 20px;
     }
@@ -112,14 +48,15 @@ st.markdown("""
         font-size: 2.5rem;
         font-weight: bold;
         text-align: center;
+        color: white;
     }
     .metric-label {
         font-size: 1.2rem;
-        color: #555;
+        color: #888;
         text-align: center;
     }
     .stButton>button {
-        background-color: #1E88E5;
+        background-color: #4CAF50;
         color: white;
         font-weight: bold;
         border-radius: 5px;
@@ -130,14 +67,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Main content
-st.markdown("<h1 class='main-header'>🌟 Black-Scholes Option Pricing Model 🌟</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='main-header'>📊 Option Prices</h1>", unsafe_allow_html=True)
 
 # Sidebar for inputs
 with st.sidebar:
-    st.markdown("<h2 style='text-align: center; color: #1E88E5;'>📊 Model Parameters</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: #4CAF50;'>Model Parameters</h2>", unsafe_allow_html=True)
     
     current_price = st.number_input("Current Asset Price ($)", value=100.0, step=1.0)
-    strike = st.number_input("Strike Price ($)", value=100.0, step=1.0)
+    strike = st.number_input("Strike Price ($)", value=95.0, step=1.0)
     time_to_maturity = st.slider("Time to Maturity (Years)", min_value=0.1, max_value=5.0, value=1.0, step=0.1)
     volatility = st.slider("Volatility (σ)", min_value=0.01, max_value=1.0, value=0.2, step=0.01)
     interest_rate = st.slider("Risk-Free Interest Rate", min_value=0.01, max_value=0.2, value=0.05, step=0.01)
@@ -145,80 +82,48 @@ with st.sidebar:
     calculate_btn = st.button('Calculate Option Prices')
 
 # Main content area
-if calculate_btn:
+if calculate_btn or 'bs_model' not in st.session_state:
     # Calculate prices
     bs_model = BlackScholes(time_to_maturity, strike, current_price, volatility, interest_rate)
     bs_model.run()
+    st.session_state.bs_model = bs_model
 
-    # Display option prices
-    st.markdown("<h2 class='sub-header'>📈 Option Prices</h2>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("<div class='card' style='background-color: rgba(144, 238, 144, 0.6);'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Call Option Price</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>${bs_model.call_price:.2f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+# Display option prices
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("<div class='card' style='background-color: #4CAF50;'>", unsafe_allow_html=True)
+    st.markdown("<p class='metric-label'>Call Option Price</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='metric-value'>${st.session_state.bs_model.call_price:.2f}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with col2:
-        st.markdown("<div class='card' style='background-color: rgba(255, 182, 193, 0.6);'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Put Option Price</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>${bs_model.put_price:.2f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+with col2:
+    st.markdown("<div class='card' style='background-color: #B07D7D;'>", unsafe_allow_html=True)
+    st.markdown("<p class='metric-label'>Put Option Price</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='metric-value'>${st.session_state.bs_model.put_price:.2f}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # Greeks
-    st.markdown("<h2 class='sub-header'>🔢 Option Greeks</h2>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Call Delta</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.call_delta:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+# Greeks
+st.markdown("<h2 class='sub-header'>🔢 Option Greeks</h2>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<p class='metric-label'>Call Delta</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='metric-value'>{st.session_state.bs_model.call_delta:.4f}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with col2:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Put Delta</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+with col2:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<p class='metric-label'>Put Delta</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='metric-value'>{st.session_state.bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with col3:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+with col3:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
+    st.markdown(f"<p class='metric-value'>{st.session_state.bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # Interactive plots
-    st.markdown("<h2 class='sub-header'>🎨 Interactive Option Price Analysis</h2>", unsafe_allow_html=True)
-
-    # Parameter ranges for analysis
-    spot_range = np.linspace(current_price * 0.5, current_price * 1.5, 50)
-    vol_range = np.linspace(max(0.01, volatility * 0.5), min(1.0, volatility * 1.5), 50)
-
-    # Calculate option prices for different spot prices and volatilities
-    call_prices = np.zeros((len(vol_range), len(spot_range)))
-    put_prices = np.zeros((len(vol_range), len(spot_range)))
-
-    for i, vol in enumerate(vol_range):
-        for j, spot in enumerate(spot_range):
-            bs_temp = BlackScholes(time_to_maturity, strike, spot, vol, interest_rate)
-            bs_temp.run()
-            call_prices[i, j] = bs_temp.call_price
-            put_prices[i, j] = bs_temp.put_price
-
-    # Create 3D surface plots
-    fig = make_subplots(rows=1, cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
-                        subplot_titles=("Call Option Price", "Put Option Price"))
-
-    fig.add_trace(go.Surface(z=call_prices, x=spot_range, y=vol_range, colorscale='Viridis'), row=1, col=1)
-    fig.add_trace(go.Surface(z=put_prices, x=spot_range, y=vol_range, colorscale='Plasma'), row=1, col=2)
-
-    fig.update_layout(scene = dict(xaxis_title='Spot Price', yaxis_title='Volatility', zaxis_title='Option Price'),
-                      scene2 = dict(xaxis_title='Spot Price', yaxis_title='Volatility', zaxis_title='Option Price'),
-                      width=1200, height=600)
-
-    st.plotly_chart(fig)
-
-else:
-    st.info("👈 Adjust the parameters in the sidebar and click 'Calculate Option Prices' to see the results!")
+# (You can keep the interactive plots section if you want, or remove it if not needed)
 
 st.markdown("---")
-st.markdown("<p style='text-align: center;'>Created by: Your Name | <a href='https://www.linkedin.com/in/your-profile/' target='_blank'>LinkedIn</a></p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #888;'>Created by: Yash | <a href='https://www.linkedin.com/in/yashprajapati23/' target='_blank' style='color: #4CAF50;'>LinkedIn</a></p>", unsafe_allow_html=True)
