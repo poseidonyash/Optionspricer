@@ -188,7 +188,7 @@ if calculate_btn:
         st.markdown(f"<p class='metric-value'>{bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-with col3:
+    with col3:
         st.markdown("<div class='card'>", unsafe_allow_html=True)
         st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='metric-value'>{bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
