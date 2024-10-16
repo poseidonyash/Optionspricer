@@ -6,9 +6,42 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from numpy import exp, sqrt, log
 
-# Black-Scholes Model class (as provided earlier)
+# Black-Scholes Model class
 class BlackScholes:
-    # ... (Keep the class implementation as is)
+    def __init__(self, T, K, S, sigma, r):
+        self.T = T  # time to maturity
+        self.K = K  # strike price
+        self.S = S  # current stock price
+        self.sigma = sigma  # volatility
+        self.r = r  # risk-free rate
+
+    def d1(self):
+        return (log(self.S / self.K) + (self.r + 0.5 * self.sigma ** 2) * self.T) / (self.sigma * sqrt(self.T))
+
+    def d2(self):
+        return self.d1() - self.sigma * sqrt(self.T)
+
+    def call_price(self):
+        return self.S * norm.cdf(self.d1()) - self.K * exp(-self.r * self.T) * norm.cdf(self.d2())
+
+    def put_price(self):
+        return self.K * exp(-self.r * self.T) * norm.cdf(-self.d2()) - self.S * norm.cdf(-self.d1())
+
+    def call_delta(self):
+        return norm.cdf(self.d1())
+
+    def put_delta(self):
+        return -norm.cdf(-self.d1())
+
+    def call_gamma(self):
+        return norm.pdf(self.d1()) / (self.S * self.sigma * sqrt(self.T))
+
+    def run(self):
+        self.call_price = self.call_price()
+        self.put_price = self.put_price()
+        self.call_delta = self.call_delta()
+        self.put_delta = self.put_delta()
+        self.call_gamma = self.call_gamma()
 
 # Page configuration
 st.set_page_config(page_title="Black-Scholes Option Pricing", layout="wide", page_icon="📊")
@@ -123,7 +156,5 @@ with col3:
     st.markdown(f"<p class='metric-value'>{st.session_state.bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# (You can keep the interactive plots section if you want, or remove it if not needed)
-
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: #888;'>Created by: Yash | <a href='https://www.linkedin.com/in/yashprajapati23/' target='_blank' style='color: #4CAF50;'>LinkedIn</a></p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #888;'>Created by: | <a href='https://www.linkedin.com/in/yashprajapati23/' target='_blank' style='color: #4CAF50;'>Yash</a></p>", unsafe_allow_html=True)
