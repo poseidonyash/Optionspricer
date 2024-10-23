@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 import base64
 from numpy import exp, sqrt, log
 
-# Black-Scholes Model class (as provided)
+# Black-Scholes Model class
 class BlackScholes:
     def __init__(
         self,
@@ -64,7 +64,7 @@ class BlackScholes:
 # Page configuration
 st.set_page_config(page_title="Black-Scholes Option Pricing", layout="wide", page_icon="💹")
 
-# Function to create a fancy background
+# Function to create a background
 def add_bg_from_base64(base64_string):
     return f"""
     <style>
@@ -75,7 +75,6 @@ def add_bg_from_base64(base64_string):
     </style>
     """
 
-# Fancy background (you can replace this with any base64 encoded image)
 background_image = """
 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==
 """
