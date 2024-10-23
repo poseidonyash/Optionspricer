@@ -169,28 +169,6 @@ if calculate_btn:
         st.markdown(f"<p class='metric-value'>${bs_model.put_price:.2f}</p>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-
-    st.markdown("<h2 class='sub-header'>🔢 Option Greeks</h2>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Call Delta</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.call_delta:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Put Delta</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with col3:
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='metric-value'>{bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # Interactive plots
     st.markdown("<h2 class='sub-header'>🎨 Interactive Option Price Analysis</h2>", unsafe_allow_html=True)
 
     # Parameter ranges for analysis
@@ -220,6 +198,29 @@ if calculate_btn:
                       width=1200, height=600)
 
     st.plotly_chart(fig)
+    
+    st.markdown("<h2 class='sub-header'>🔢 Option Greeks</h2>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.markdown("<p class='metric-label'>Call Delta</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='metric-value'>{bs_model.call_delta:.4f}</p>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.markdown("<p class='metric-label'>Put Delta</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='metric-value'>{bs_model.put_delta:.4f}</p>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.markdown("<p class='metric-label'>Gamma</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='metric-value'>{bs_model.call_gamma:.4f}</p>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Interactive plots
+
 
 else:
     st.info("👈 Adjust the parameters in the sidebar and click 'Calculate Option Prices' to see the results!")
