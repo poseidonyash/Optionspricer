@@ -75,6 +75,10 @@ def add_bg_from_base64(base64_string):
     </style>
     """
 
+<<<<<<< HEAD
+=======
+# Fancy background 
+>>>>>>> 387af57295c8fd31736dbb0f635281d214d1a109
 background_image = """
 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==
 """
