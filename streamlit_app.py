@@ -75,7 +75,7 @@ def add_bg_from_base64(base64_string):
     </style>
     """
 
-# Fancy background (you can replace this with any base64 encoded image)
+# Fancy background 
 background_image = """
 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==
 """
