@@ -7,7 +7,6 @@ from plotly.subplots import make_subplots
 import base64
 from numpy import exp, sqrt, log
 
-# Black-Scholes Model class
 class BlackScholes:
     def __init__(
         self,
@@ -61,10 +60,9 @@ class BlackScholes:
         )
         self.put_gamma = self.call_gamma
 
-# Page configuration
 st.set_page_config(page_title="Black-Scholes Option Pricing", layout="wide", page_icon="💹")
 
-# Function to create a background
+
 def add_bg_from_base64(base64_string):
     return f"""
     <style>
@@ -75,10 +73,6 @@ def add_bg_from_base64(base64_string):
     </style>
     """
 
-<<<<<<< HEAD
-=======
-# Fancy background 
->>>>>>> 387af57295c8fd31736dbb0f635281d214d1a109
 background_image = """
 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==
 """
@@ -140,10 +134,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Main content
+
 st.markdown("<h1 class='main-header'>🌟 Black-Scholes Option Pricing Model 🌟</h1>", unsafe_allow_html=True)
 
-# Sidebar for inputs
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #1E88E5;'>📊 Model Parameters</h2>", unsafe_allow_html=True)
     
@@ -155,7 +148,7 @@ with st.sidebar:
 
     calculate_btn = st.button('Calculate Option Prices')
 
-# Main content area
+
 if calculate_btn:
     # Calculate prices
     bs_model = BlackScholes(time_to_maturity, strike, current_price, volatility, interest_rate)
